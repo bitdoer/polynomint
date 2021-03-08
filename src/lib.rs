@@ -200,6 +200,23 @@ impl Polynomial {
         acc
     }
 
+    /// Returns `true` if `x` is a root of the polynomial; otherwise returns `false`.
+    ///
+    /// # Examples
+    /// ```
+    /// use polynomint::{Polynomial, poly};
+    /// let poly = poly![-2, 1] * poly![-4, 1] * poly![3, 1];
+    ///
+    /// assert_eq!(poly, poly![24, -10, -3, 1]);
+    /// assert!(poly.has_root(2));
+    /// assert!(poly.has_root(4));
+    /// assert!(poly.has_root(-3));
+    /// assert!(!poly.has_root(1));
+    /// ```
+    pub fn has_root(&self, x: isize) -> bool {
+        self.eval(x) == 0
+    }
+
     /// Removes trailing zeroes from a polynomial. Used to make sure the API only exposes
     /// polynomials with no stored zeroes of higher-order, both to keep them as lightweight
     /// as possible and because this invariant is taken advantage of by functions like
