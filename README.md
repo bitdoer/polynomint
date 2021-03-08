@@ -1,1 +1,1 @@
-Rust crate for manipulating polynomials. Intended to eventually be put up as a library, pending name and more features.
+Rust crate for manipulating integer polynomials. Intended to have no dependencies outside the standard library, and be relatively ergonomic.

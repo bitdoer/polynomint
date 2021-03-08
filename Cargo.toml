@@ -1,8 +1,9 @@
 [package]
 name = "polynomint"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["bit doer <bitdoer@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/bitdoer/polynomint"
 description = "A no-dependency library for working with integer polynomials"
 license = "MIT"
 
