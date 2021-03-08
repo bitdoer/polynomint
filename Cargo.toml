@@ -3,6 +3,9 @@ name = "polynomint"
 version = "0.1.1"
 authors = ["bit doer <bitdoer@gmail.com>"]
 edition = "2018"
+description = "A no-dependency library for working with integer polynomials"
+license = "MIT"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
