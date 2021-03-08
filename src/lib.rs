@@ -8,7 +8,7 @@ pub mod sub;
 ///
 /// # Examples
 /// ```
-/// use polynomial::{Polynomial, poly};
+/// use polynomint::{Polynomial, poly};
 ///
 /// let quadratic = poly![1, 2, 1]; // x^2 + 2x + 1
 /// let linear = poly![-6, 1]; // x - 6
@@ -33,7 +33,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::Polynomial;
+    /// use polynomint::Polynomial;
     ///
     /// let quadratic = Polynomial::new(vec![1, 2, 3]); // 3x^2 + 2x + 1
     /// let cubic = Polynomial::new(vec![8, 12, 6, 1]); // x^3 + 6x^2 + 12x + 8
@@ -64,7 +64,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::{Polynomial, poly};
+    /// use polynomint::{Polynomial, poly};
     ///
     /// let zero = Polynomial::zero();
     /// let alt_zero = Polynomial::constant(0);
@@ -84,7 +84,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::{Polynomial, poly};
+    /// use polynomint::{Polynomial, poly};
     ///
     /// let first = poly![1, 2, 3];
     /// let second = first.times_x();
@@ -102,7 +102,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::{Polynomial, poly};
+    /// use polynomint::{Polynomial, poly};
     ///
     /// let poly = poly![6, -5, 3, -7, 4];
     /// assert_eq!(poly.rem_euclid(2), poly![0, 1, 1, 1]);
@@ -126,7 +126,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::{Polynomial, poly};
+    /// use polynomint::{Polynomial, poly};
     ///
     /// let zero = Polynomial::zero();
     /// let also_zero = Polynomial::constant(0);
@@ -148,7 +148,7 @@ impl Polynomial {
     ///
     /// # Examples
     /// ```
-    /// use polynomial::{Polynomial, poly};
+    /// use polynomint::{Polynomial, poly};
     ///
     /// let poly1 = poly![1, -2, 5, 4]; // 4x^3 + 5x^2 - 2x + 1
     /// assert_eq!(poly1.derivative(), poly![-2, 10, 12]); // deriv. is 12x^2 + 10x - 2
