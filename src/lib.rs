@@ -169,6 +169,37 @@ impl Polynomial {
         }
     }
 
+    /// Plugs in a specific `isize` value `x` to the polynomial.
+    ///
+    /// # Examples
+    /// ```
+    /// use polynomint::{poly, Polynomial};
+    ///
+    /// let poly1 = poly![5,2,1];
+    /// let poly2 = poly![-5,4,-3,-1];
+    ///
+    /// assert_eq!(poly1.eval(1), 8);
+    /// assert_eq!(poly2.eval(1), -5);
+    ///
+    /// assert_eq!(poly1.eval(-2), 5);
+    /// assert_eq!(poly2.eval(-2), -17);
+    /// ```
+    pub fn eval(&self, x: isize) -> isize {
+        let mut acc = 0;
+        // take a polynomial like 5x^2 + 2x + 3: we can get this by: 0 *= x -> 0
+        //                                                             += 5 -> 5
+        //                                                             *= x -> 5x
+        //                                                             += 2 -> 5x + 2
+        //                                                             *= x -> 5x^2 + 2x
+        //                                                             += 3 -> 5x^2 + 2x + 3
+        // this motivates the loop
+        for &i in self.coeffs.iter().rev() {
+            acc *= x;
+            acc += i;
+        }
+        acc
+    }
+
     /// Removes trailing zeroes from a polynomial. Used to make sure the API only exposes
     /// polynomials with no stored zeroes of higher-order, both to keep them as lightweight
     /// as possible and because this invariant is taken advantage of by functions like
