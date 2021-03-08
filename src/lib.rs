@@ -14,8 +14,15 @@ pub mod sub;
 /// let linear = poly![-6, 1]; // x - 6
 /// assert_eq!(&quadratic * 5, poly![5, 10, 5]);
 /// assert_eq!(&quadratic * &linear, poly![-6, -11, -4, 1]);
+///
+/// let mut resultant = &quadratic * &linear;
+/// resultant %= 5;
+/// assert_eq!(resultant, poly![-1, -1, -4, 1]);
+///
+/// let resultant2 = (&quadratic * &linear).rem_euclid(5);
+/// assert_eq!(resultant2, poly![4, 4, 1, 1]);
 /// ```
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Polynomial {
     coeffs: Vec<isize>,
 }
@@ -75,7 +82,7 @@ impl Polynomial {
 
     /// Gives a new polynomial equal to the old one times x.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use polynomial::{Polynomial, poly};
     ///
@@ -93,7 +100,7 @@ impl Polynomial {
     /// Gives a new polynomial equal to the remainder of the old one when taken
     /// modulo `n`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use polynomial::{Polynomial, poly};
     ///
@@ -135,6 +142,31 @@ impl Polynomial {
     /// ```
     pub fn is_zero(&self) -> bool {
         self.degree() == -1
+    }
+
+    /// Creates a new polynomial which is the derivative of the old one.
+    ///
+    /// # Examples
+    /// ```
+    /// use polynomial::{Polynomial, poly};
+    ///
+    /// let poly1 = poly![1, -2, 5, 4]; // 4x^3 + 5x^2 - 2x + 1
+    /// assert_eq!(poly1.derivative(), poly![-2, 10, 12]); // deriv. is 12x^2 + 10x - 2
+    /// let poly2 = poly![192, 3, -4, -9, 0, 38]; // 38x^5 - 9x^3 - 4x^2 + 3x + 192
+    /// assert_eq!(poly2.derivative(), poly![3, -8, -27, 0, 190]); // deriv. is 190x^4 - 27x^2 - 8x + 3
+    /// ```
+    pub fn derivative(&self) -> Self {
+        if self.degree() <= 0 {
+            Self::zero()
+        } else {
+            let mut coeffs = Vec::new();
+            for i in 0..self.degree() {
+                coeffs.push((i + 1) * self.coeffs[i as usize + 1]);
+            }
+            let mut output = Self { coeffs };
+            output.reduce();
+            output
+        }
     }
 
     /// Removes trailing zeroes from a polynomial. Used to make sure the API only exposes
@@ -223,15 +255,29 @@ mod tests {
     use crate::{poly, Polynomial};
     #[test]
     fn it_works() {
-        let quadratic = poly![1, 2, 1]; // x^2 + 2x + 1
+        let mut quadratic = poly![1, 2, 1]; // x^2 + 2x + 1
         let linear = poly![-6, 1]; // x - 6
-        println!("({}) + ({}) = {}", quadratic, linear, &quadratic + &linear);
-        println!("({}) - ({}) = {}", quadratic, linear, &quadratic - &linear);
-        println!("({})({})    = {}", quadratic, linear, &quadratic * &linear);
-        let another = poly![1, 3, 3, 1]; // x^3 + 3x^2 + 3x + 1
+        assert_eq!(&quadratic + &linear, poly![-5, 3, 1]);
+        assert_eq!(&quadratic - &linear, poly![7, 1, 1]);
+        assert_eq!(&quadratic * &linear, poly![-6, -11, -4, 1]);
+        quadratic -= &linear;
+        assert_eq!(quadratic, poly![7, 1, 1]);
+        quadratic += &linear;
+        assert_eq!(quadratic, poly![1, 2, 1]);
+        quadratic *= &linear;
+        assert_eq!(quadratic, poly![-6, -11, -4, 1]);
+        assert_eq!(quadratic.derivative(), poly![-11, -8, 3]);
+        let mut another = poly![1, 3, 3, 1]; // x^3 + 3x^2 + 3x + 1
         let pair = poly![-5, 4, 2]; // 2x^2 + 4x - 5
-        println!("({}) + ({}) = {}", another, pair, &another + &pair);
-        println!("({}) - ({}) = {}", another, pair, &another - &pair);
-        println!("({})({})    = {}", another, pair, &another * &pair);
+        assert_eq!(&another + &pair, poly![-4, 7, 5, 1]);
+        assert_eq!(&another - &pair, poly![6, -1, 1, 1]);
+        assert_eq!(&another * &pair, poly![-5, -11, -1, 13, 10, 2]);
+        another -= &pair;
+        assert_eq!(another, poly![6, -1, 1, 1]);
+        another += &pair;
+        assert_eq!(another, poly![1, 3, 3, 1]);
+        another *= &pair;
+        assert_eq!(another, poly![-5, -11, -1, 13, 10, 2]);
+        assert_eq!(another.derivative(), poly![-11, -2, 39, 40, 10]);
     }
 }

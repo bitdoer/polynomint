@@ -20,7 +20,7 @@ impl Sub for Polynomial {
                     // are already correct
                     break;
                 } else {
-                    // otherwise just sub from self---this makes the addition be in-place
+                    // otherwise just sub from self---this makes the subtraction be in-place
                     self.coeffs[i as usize] -= rhs.coeffs[i as usize];
                 }
             }
@@ -121,7 +121,7 @@ impl SubAssign for Polynomial {
                     // are already correct
                     break;
                 } else {
-                    // otherwise just sub from self---this makes the addition be in-place
+                    // otherwise just sub from self---this makes the subtraction be in-place
                     self.coeffs[i as usize] -= rhs.coeffs[i as usize];
                 }
             }
@@ -145,7 +145,7 @@ impl<'a> SubAssign<&'a Polynomial> for Polynomial {
                     // are already correct
                     break;
                 } else {
-                    // otherwise just sub from self---this makes the addition be in-place
+                    // otherwise just sub from self---this makes the subtraction be in-place
                     self.coeffs[i as usize] -= rhs.coeffs[i as usize];
                 }
             }
