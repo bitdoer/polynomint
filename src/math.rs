@@ -182,6 +182,11 @@ impl Polynomial {
     /// result of factoring `x - a` out of `self`, if everything is considered
     /// a polynomial with coefficients modulo `p`. Otherwise returns `None`.
     ///
+    /// The API demands that `p` be prime because factoring gets more complicated
+    /// when the modulus is composite, like the integers mod 4---the example below,
+    /// `x^2 - 8x + 12`, just becomes `x^2`, but `x^2 = x^2 + 4x + 4 = (x + 2)^2`,
+    /// and unique factorization is lost.
+    ///
     /// # Examples
     /// ```
     /// use polynomint::{Polynomial, poly};
