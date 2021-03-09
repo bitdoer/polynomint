@@ -1,4 +1,6 @@
 pub mod add;
+pub mod index;
+pub mod iter;
 pub mod mul;
 pub mod rem;
 pub mod sub;
@@ -215,6 +217,37 @@ impl Polynomial {
     /// ```
     pub fn has_root(&self, x: isize) -> bool {
         self.eval(x) == 0
+    }
+
+    /// Returns `true` if `x` is a root of the polynomial taken modulo `div`; otherwise returns false.
+    ///
+    /// # Examples
+    /// ```
+    /// use polynomint::{Polynomial, poly};
+    ///
+    /// let poly = poly![-2, 1] * poly![-6, 1];
+    ///
+    /// assert_eq!(poly, poly![12, -8, 1]);
+    /// assert!(poly.has_root_mod(2, 5));
+    /// assert!(poly.has_root_mod(1, 5));
+    /// assert!(poly.has_root_mod(2, 3));
+    /// assert!(poly.has_root_mod(0, 3));
+    /// assert!(!poly.has_root_mod(4, 5));
+    /// ```
+    pub fn has_root_mod(&self, x: isize, div: isize) -> bool {
+        self.eval(x).rem_euclid(div) == 0
+    }
+
+    /// Returns a reference to `self`'s vector of coefficients, in order of ascending
+    /// degree (`poly.coeffs()[n]` is the `x^n` coefficient of `poly`).
+    pub fn coeffs(&self) -> &Vec<isize> {
+        &(self.coeffs)
+    }
+
+    /// Returns a mutable reference to `self`'s vector of coefficients, in order of
+    /// ascending degree (`poly.coeffs_mut()[n]` is the `x^n` coefficient of `poly`).
+    pub fn coeffs_mut(&mut self) -> &mut Vec<isize> {
+        &mut (self.coeffs)
     }
 
     /// Removes trailing zeroes from a polynomial. Used to make sure the API only exposes
